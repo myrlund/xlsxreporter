@@ -1,5 +1,9 @@
 import functools
 
+from xlsxwriter.utility import xl_rowcol_to_cell as cell
+
+__all__ = ["cell", "row_renderer"]
+
 
 def row_renderer(func):
     """

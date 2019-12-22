@@ -1,8 +1,8 @@
 import enum
 import io
+import re
 
 import xlsxwriter
-from xlsxwriter.utility import quote_sheetname
 
 from .utils import row_renderer
 
@@ -28,6 +28,8 @@ class BaseReport:
     num_header_rows = None
     print_columns = None
 
+    invalid_sheet_name_expr = re.compile(r"[/\\*'?[\]:]+")
+
     def __init__(self, **kwargs):
         self.kwargs = kwargs
 
@@ -40,7 +42,7 @@ class BaseReport:
         def add_format(fmt):
             return self.add_format(workbook, fmt)
 
-        escaped_title = quote_sheetname(title)
+        escaped_title = self.invalid_sheet_name_expr.sub(" ", title)
 
         worksheet = workbook.add_worksheet(escaped_title)
         worksheet.set_paper(self.paper)

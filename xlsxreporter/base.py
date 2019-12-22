@@ -2,6 +2,7 @@ import enum
 import io
 
 import xlsxwriter
+from xlsxwriter.utility import quote_sheetname
 
 from .utils import row_renderer
 
@@ -39,7 +40,9 @@ class BaseReport:
         def add_format(fmt):
             return self.add_format(workbook, fmt)
 
-        worksheet = workbook.add_worksheet(title)
+        escaped_title = quote_sheetname(title)
+
+        worksheet = workbook.add_worksheet(escaped_title)
         worksheet.set_paper(self.paper)
 
         if self.orientation == self.Orientation.LANDSCAPE:
